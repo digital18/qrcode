@@ -1,0 +1,99 @@
+<html>
+    <meta charset="utf-8" />
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://developerhelpdesk.com/OS/qrcode.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js" integrity="sha512-jzL0FvPiDtXef2o2XZJWgaEpVAihqquZT/tT89qCVaxVuHwJ/1DFcJ+8TBMXplSJXE8gLbVAUv+Lj20qHpGx+A==" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    </head>
+    <body>
+        <div class="container" >
+           <div class="row justify-content-center align-self-center" style="margin: 22% 0 0 0">
+            <div class="card col-md-4 col-sx-6 col-sm-12" style="padding:0 0 -1% 0">
+            <h3 style="margin-top:10%;margin-left:10%"><i class="fa fa-qrcode" aria-hidden="true"> QR Generater</i></h3>
+
+                <hr/>
+                <lable class="lable-control">Enter Height</lable>
+                <input type="text" id="height" />
+                    <hr/>
+                <lable class="lable-control">Enter width</lable>
+                <input type="text" id="width" />
+                    <hr/>
+                <lable class="lable-control">Enter Data</lable>
+                <input type="text" id="qrData" />
+                    <hr/>
+                <button type="button" id="btn" class="btn btn-primary">   <i class="fa fa-qrcode" aria-hidden="true"> Generate</i></button>
+                <button type="button" class="btn btn-success" onclick="downloadQR();"> <b><i class="fa fa-download" aria-hidden="true"></i>  Download</button>
+                <a id="link" download="qr.png"></a>
+                <div class="justify-content-center align-self-center">
+                <div id="qrcode" class="qrcode " style="margin:12% 12% 12% 25%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </body>
+    <style type="text/css">
+    button{
+      margin-top:2%;
+      margin-bottom:2%;
+    }
+
+    body{
+    margin: -9%;
+    height: 100%;
+    overflow: hidden;
+    background-color:#ffc1ff
+  }
+  .lable-control{
+    font-weight: bold;
+  }
+    </style>
+    <script>
+        function downloadQR(){
+
+            $("#link").get(0).click();
+        }
+
+        $("#btn").click(function () {
+            document.getElementById("qrcode").innerHTML="";
+            var qrcode = new QRCode(document.getElementById("qrcode"), {
+                width: $("#width").val(),
+                height: $("#height").val(),
+            });
+            qrcode.makeCode($("#qrData").val());
+            var a = qrcode._oDrawing._elCanvas.toDataURL("image/png");
+            $("#link").attr("href", a);
+
+        });
+
+        var href = window.location.href.indexOf("?");
+        var url = window.location.href.slice(window.location.href.indexOf("?") + 1).split("&");
+
+        if (href > 0) {
+            for (i = 0; i < 3; i++) {
+                if (url[i].match(/width/i)) {
+                    var width = url[i].slice(url[i].indexOf("=") + 1);
+                }
+                if (url[i].match(/height/i)) {
+                    var height = url[i].slice(url[i].indexOf("=") + 1);
+                }
+                if (url[i].match(/text/i)) {
+                    var text = url[i].slice(url[i].indexOf("=") + 1);
+                }
+            }
+
+            var url = window.location.href.slice(window.location.href.indexOf("?") + 1).split("&");
+            var qrcode = new QRCode(document.getElementById("qrcode"), {
+                width: width,
+                height: height,
+            });
+            qrcode.makeCode(text);
+            var a = qrcode._oDrawing._elCanvas.toDataURL("image/png");
+            $("#link").attr("href", a);
+            downloadQR();
+
+        }
+    </script>
+</html>
