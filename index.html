@@ -102,8 +102,9 @@
             });
             qrcode.makeCode(text);
             var a = qrcode._oDrawing._elCanvas.toDataURL("image/png");
-            $("#link").attr("href", a);
-            downloadQR();
+            //$("#link").attr("href", a);
+            //downloadQR();
+            window.location.href=a;
 
         }
     </script>
